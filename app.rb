@@ -16,7 +16,7 @@ after do
 end
 
 get '/' do
-  @comments = Comment.all.reverse
+  @comments = Comment.order('id desc')
   erb :index
 end
 
