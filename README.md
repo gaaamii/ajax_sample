@@ -1,6 +1,6 @@
 # Ajaxサンプル 
 
-解説記事：[]
+解説記事：[SinatraとjQueryでおよそ100行で作るAjax掲示板アプリケーション](http://shgam.hatenadiary.jp/entry/2014/04/25/224540)
 
 ## 目的
 Ajaxのふんわりした理解
