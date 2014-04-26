@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>掲示板アプリでAjax</title>
+  <script type="text/javascript" src="/js/jquery-1.11.0.min.js"></script>
+</head>
+<body style="width:60%;margin:0 auto;text-align:center;">
+  <h1>掲示板アプリでAjax</h1>
+  <div class="comment-form">
+    <input type="text" id="user-id" placeholder="名無し" /><br />
+    <textarea id="comment-body" /></textarea><br />
+    <input id="submit-comment" type="button" value="コメントする" />
+  </div>
+  <div class="comment-view">
+    <div id="comments">
+      <% @comments.each do |comment| %>
+        <p><%= escape_html "#{comment.body} by #{comment.user_id}" %></p>
+      <% end %>
+    </div>
+  </div>
+  <script type="text/javascript">
+    function escapeHTML(s) {
+      return $('<div>').text(s).html();
+    }
+    $(function(){
+      $("#submit-comment").click(function(){
+        var comment = $("#comment-body").val();
+        var userId = $("#user-id").val();
+        if(userId.length == 0) userId = "名無し" ;
+        var request = $.ajax({
+          type: "POST",
+          url: "/comment",
+          data: {
+            body: comment,
+            user_id:  userId
+          }
+        });
+        request.done(function(msg){
+          $.ajax({
+            type: "GET",
+            url: "/comments/last",
+            dataType: "json"
+          })
+          .done(function(res){
+            $("#comments").prepend('<p>' + escapeHTML(res.body) + ' by ' + escapeHTML(res.user_id) + '</p>');
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
